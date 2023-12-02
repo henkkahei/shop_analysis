@@ -1,0 +1,12 @@
+sqlalchemy
+pandas
+numpy
+matplotlib
+seaborn
+scikit-learn
+coverage
+pytest
+postgres
+ipywidgets
+ipykernel
+pillow

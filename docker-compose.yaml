@@ -1,0 +1,40 @@
+version: "3"
+services:
+
+  project_database:
+    container_name: project_database
+    image: timescale/timescaledb:latest-pg15
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: henri
+      POSTGRES_PASSWORD: henrim
+    volumes:
+      - vol-project:/var/lib/postgresql/data
+      - ./timescaledb-init:/docker-entrypoint-initdb.d
+    networks:
+      - notebook-timescale-network
+
+  project-notebook:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: project_notebook
+    volumes:
+      - ./:/home/jovyan/work
+    ports:
+      - 8889:8888
+    environment:
+      - JUPYTER_TOKEN=project
+      - GRANT_SUDO=yes
+      - JUPYTER_ENABLE_LAB=yes
+    networks:
+      - notebook-timescale-network
+
+networks:
+  notebook-timescale-network:
+    external: false
+
+volumes:
+  vol-project:
+    external: false
